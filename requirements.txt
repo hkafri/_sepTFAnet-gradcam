@@ -8,3 +8,7 @@ PyYAML>=5.4.0
 
 # Only needed to reproduce scripts/fetch_librispeech_samples.py (HF streaming path)
 datasets>=2.14.0
+
+# Only needed for scripts/evaluate_vad_alignment.py and scripts/evaluate_robustness.py
+silero-vad>=5.1
+pyroomacoustics>=0.7.0

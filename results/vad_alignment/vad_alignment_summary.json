@@ -1,0 +1,50 @@
+{
+  "num_speaker_instances": 70,
+  "target_layer": "TCN.TCN.9.conv1d",
+  "reference_source": "Silero VAD (github.com/snakers4/silero-vad) run on clean pre-mix sources -- NOT hand-labeled ground truth, a second automatic VAD model's reference",
+  "default_thresholds": {
+    "0.3": {
+      "cam_iou_mean": 0.22729410492022267,
+      "cam_iou_std": 0.15779773910148323,
+      "cam_f1_mean": 0.3461562460472048,
+      "cam_f1_std": 0.1910623514147685,
+      "netvad_iou_mean": 0.8627365402238888,
+      "netvad_iou_std": 0.14099761926688484,
+      "netvad_f1_mean": 0.9189808837410354,
+      "netvad_f1_std": 0.09751928143299818
+    },
+    "0.5": {
+      "cam_iou_mean": 0.11506333827645905,
+      "cam_iou_std": 0.10080602957479996,
+      "cam_f1_mean": 0.19386778149173747,
+      "cam_f1_std": 0.1398748439475073,
+      "netvad_iou_mean": 0.854736909113904,
+      "netvad_iou_std": 0.1482671538777257,
+      "netvad_f1_mean": 0.9133614803406196,
+      "netvad_f1_std": 0.10499200984248507
+    },
+    "0.7": {
+      "cam_iou_mean": 0.04363290933747644,
+      "cam_iou_std": 0.043559062857120565,
+      "cam_f1_mean": 0.08062915834732755,
+      "cam_f1_std": 0.07180040265812539,
+      "netvad_iou_mean": 0.8334851445637173,
+      "netvad_iou_std": 0.14651283971146373,
+      "netvad_f1_mean": 0.9008482596587778,
+      "netvad_f1_std": 0.10529592173119048
+    }
+  },
+  "best_f1_threshold": {
+    "cam_f1_mean": 0.5219899859172438,
+    "cam_f1_std": 0.21685275836799794,
+    "cam_iou_mean": 0.38309889531265745,
+    "cam_iou_std": 0.2067840467739188,
+    "cam_avg_best_threshold": 0.0557142857142857,
+    "netvad_f1_mean": 0.938508726707138,
+    "netvad_f1_std": 0.08079791261162256,
+    "netvad_iou_mean": 0.8933013049124335,
+    "netvad_iou_std": 0.12120515049001873,
+    "netvad_avg_best_threshold": 0.3071428571428571
+  },
+  "cam_as_fraction_of_netvad_ceiling_f1_bestthr": 0.556190870753758
+}
