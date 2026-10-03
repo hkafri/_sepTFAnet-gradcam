@@ -114,27 +114,35 @@ def save_figure(spec, vad_cam, waveform_cam, paths, target_speaker, output_path)
     log_spec = np.log10(spec + 1e-8)
     source_text = " | ".join(path.name for path in paths)
 
-    fig, axes = plt.subplots(1, 4, figsize=(22, 5), constrained_layout=True)
+    fig, axes = plt.subplots(1, 4, figsize=(22, 5.6), constrained_layout=True)
     axes[0].imshow(log_spec, aspect="auto", origin="lower", cmap="viridis", extent=[0, TARGET_SECONDS, 0, spec.shape[0]])
-    axes[0].set_title("Mixture spectrogram")
+    axes[0].set_title(f"Mixture spectrogram (separation target: Speaker {target_speaker})")
     axes[0].set_xlabel("Seconds")
     axes[0].set_ylabel("Frequency bin")
     axes[1].plot(time, vad_plot, color="darkorange")
-    axes[1].set_title("VAD-logit CAM")
+    axes[1].set_title(f"VAD-logit CAM (Speaker {target_speaker})")
     axes[1].set_ylim(0, 1)
     axes[1].set_xlabel("Seconds")
+    axes[1].set_ylabel("Normalized importance")
     axes[2].plot(time, waveform_plot, color="crimson")
-    axes[2].set_title("Waveform CAM")
+    axes[2].set_title(f"Waveform-target CAM (Speaker {target_speaker})")
     axes[2].set_ylim(0, 1)
     axes[2].set_xlabel("Seconds")
+    axes[2].set_ylabel("Normalized importance")
     axes[3].imshow(log_spec, aspect="auto", origin="lower", cmap="gray", extent=[0, TARGET_SECONDS, 0, spec.shape[0]])
     axes[3].imshow(np.tile(waveform_plot, (spec.shape[0], 1)), aspect="auto", origin="lower", cmap="inferno", alpha=0.6, extent=[0, TARGET_SECONDS, 0, spec.shape[0]])
-    axes[3].plot(time, vad_plot * spec.shape[0], color="cyan", linewidth=1, label="VAD logit")
-    axes[3].set_title("Waveform CAM overlay")
+    axes[3].plot(time, vad_plot * spec.shape[0], color="cyan", linewidth=1, label="VAD-logit CAM curve")
+    axes[3].set_title(f"Waveform-target CAM heatmap + VAD-logit curve (Speaker {target_speaker})")
     axes[3].set_xlabel("Seconds")
     axes[3].set_ylabel("Frequency bin")
     axes[3].legend(loc="upper right")
     fig.suptitle(f"Real LibriSpeech, target speaker {target_speaker}: {source_text}", fontsize=12)
+    fig.text(0.5, -0.02,
+             "\"Waveform-target CAM\" is a Grad-CAM saliency curve backpropagated from the separated-waveform output, "
+             "not the audio signal itself. A moderate, imperfect correspondence between the VAD-logit CAM\n"
+             "and speech activity is the expected, already-quantified result: CAM-vs-Silero-reference best F1 = 0.522 vs. "
+             "the network's own predicted-VAD F1 = 0.939 on the same reference (Part 2).",
+             ha="center", va="top", fontsize=9)
     fig.savefig(output_path, dpi=150, bbox_inches="tight")
     plt.close(fig)
 
@@ -188,7 +196,7 @@ def main():
 
     print("\nNormalization and control checks:")
     report_comparison(cams["vad_logit"][0], cams["vad_logit"][1], "VAD-logit CAM speaker comparison")
-    report_comparison(cams["waveform"][0], cams["waveform"][1], "waveform CAM speaker comparison")
+    report_comparison(cams["waveform"][0], cams["waveform"][1], "Waveform-target CAM speaker comparison")
     print(f"\nSaved final figures and source metadata to {output_dir}")
 
 

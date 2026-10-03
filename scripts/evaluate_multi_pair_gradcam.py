@@ -143,7 +143,7 @@ def compute_wilcoxon_stats(real_maes, random_maes):
 def create_paired_comparison_plot(pair_results, output_path):
     fig, axes = plt.subplots(1, 2, figsize=(14, 5.5), constrained_layout=True)
 
-    kinds = [("vad", "VAD-Logit CAM"), ("wave", "Waveform CAM")]
+    kinds = [("vad", "VAD-Logit CAM"), ("wave", "Waveform-target CAM")]
 
     for ax_idx, (kind_key, title) in enumerate(kinds):
         ax = axes[ax_idx]
@@ -316,7 +316,7 @@ def main():
     print(f"  Real-vs-Random Control MAE:  {summary['vad_logit']['random_control_mae_mean']:.4f} ± {summary['vad_logit']['random_control_mae_std']:.4f}")
     print(f"  Wilcoxon Statistic W:        {vad_stats['w_statistic']}, p-value: {vad_stats['p_value']:.2e}, Rank-Biserial r: {vad_stats['rank_biserial_r']:.3f}")
     print("-" * 70)
-    print(f"Waveform CAM (N={args.num_pairs} pairs):")
+    print(f"Waveform-target CAM (N={args.num_pairs} pairs):")
     print(f"  Real Speaker-vs-Speaker MAE: {summary['waveform']['real_mae_mean']:.4f} ± {summary['waveform']['real_mae_std']:.4f}")
     print(f"  Real-vs-Random Control MAE:  {summary['waveform']['random_control_mae_mean']:.4f} ± {summary['waveform']['random_control_mae_std']:.4f}")
     print(f"  Wilcoxon Statistic W:        {wave_stats['w_statistic']}, p-value: {wave_stats['p_value']:.2e}, Rank-Biserial r: {wave_stats['rank_biserial_r']:.3f}")

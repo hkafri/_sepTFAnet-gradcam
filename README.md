@@ -151,8 +151,8 @@ Both methods were run through the existing MAE-vs-random-control + Wilcoxon vali
 |---|---|---|---|---|---|---|
 | Single (`TCN.TCN.9.conv1d`) | VAD-logit | $0.2571 \pm 0.0931$ | $0.4130 \pm 0.0533$ | **$0.1559$** | $1.38\times10^{-7}$ | $0.902$ |
 | Ensemble (Blocks 0, 9, 19) | VAD-logit | $0.2564 \pm 0.0528$ | $0.3621 \pm 0.0336$ | $0.1057$ | $1.75\times10^{-10}$ | $0.994$ |
-| Single (`TCN.TCN.9.conv1d`) | Waveform | $0.2411 \pm 0.0710$ | $0.4217 \pm 0.0554$ | **$0.1807$** | $1.11\times10^{-9}$ | $0.978$ |
-| Ensemble (Blocks 0, 9, 19) | Waveform | $0.2569 \pm 0.0455$ | $0.3536 \pm 0.0347$ | $0.0967$ | $2.50\times10^{-9}$ | $0.968$ |
+| Single (`TCN.TCN.9.conv1d`) | Waveform-target | $0.2411 \pm 0.0710$ | $0.4217 \pm 0.0554$ | **$0.1807$** | $1.11\times10^{-9}$ | $0.978$ |
+| Ensemble (Blocks 0, 9, 19) | Waveform-target | $0.2569 \pm 0.0455$ | $0.3536 \pm 0.0347$ | $0.0967$ | $2.50\times10^{-9}$ | $0.968$ |
 
 **Verdict: the ensemble does not clearly help, and is kept out.** Absolute real-vs-real MAE is nearly identical
 between the two methods, and the ensemble does have lower pair-to-pair variance (a real, if minor, upside). But
@@ -169,7 +169,11 @@ Full per-pair numbers, summary stats, and the comparison plot are saved in
 
 ### Finalized Block 9 Example
 
-These figures use the finalized `TCN.TCN.9.conv1d` target layer and the existing four-panel renderer: mixture spectrogram, VAD-logit CAM curve, waveform CAM curve, and waveform-CAM overlay with the VAD-logit line. Both targets come from the same real LibriSpeech mixture formed from `5639-40744-0000.flac` and `61-70968-0001.flac`.
+These figures use the finalized `TCN.TCN.9.conv1d` target layer and the four-panel renderer: mixture spectrogram, VAD-logit CAM curve, waveform-target CAM curve, and a combined overlay panel. Both targets come from the same real LibriSpeech mixture formed from `5639-40744-0000.flac` and `61-70968-0001.flac`. Every panel title names the speaker it explains, and both CAM curve panels carry a "Normalized importance" y-axis label so they cannot be mistaken for amplitude plots.
+
+**Naming clarification (advisor feedback):** "Waveform-target CAM" is a second Grad-CAM saliency curve backpropagated from the separated-waveform output — it is not a plot of the audio waveform itself. The overlay panel was kept as a single panel rather than split into two (to keep the figure at a compact four panels) and was renamed to "Waveform-target CAM heatmap + VAD-logit curve" so its title names both of its contents.
+
+**Expected alignment level:** a moderate, imperfect visual correspondence between the VAD-logit CAM curve and the spectrogram is the expected, already-quantified outcome — CAM-vs-Silero-reference best F1 = $0.522$ vs. the network's own predicted-VAD F1 = $0.939$ against the same reference (see [VAD ground-truth alignment](#vad-ground-truth-alignment-iou--f1)). This is a measured result, not a bug in the figure.
 
 ![Speaker 0 example using TCN.TCN.9.conv1d](results/librispeech_gradcam/example_speaker0_block9.png)
 
@@ -187,7 +191,7 @@ Statistical validation across **selection set ($N = 20$ pairs)**, **disjoint hel
 | **Held-Out Set** | **$15$** | **$0.2580 \pm 0.0652$** | **$0.4185 \pm 0.0592$** | **$1.0$** | **$1.22 \times 10^{-4}$** | **$0.983$** | **None (Zero speaker overlap)** |
 | **Pooled Total** | **$35$** | **$0.2571 \pm 0.0931$** | **$0.4131 \pm 0.0582$** | **$10.0$** | **$1.38 \times 10^{-7}$** | **$0.902$** | Minimal |
 
-### Waveform CAM Comparison
+### Waveform-Target CAM Comparison
 
 | Subset | $N$ Pairs | Real Speaker-vs-Speaker MAE | Real-vs-Random Control MAE | Wilcoxon $W$ | $p$-value | Rank-Biserial $r$ | Selection Bias Risk |
 |---|---|---|---|---|---|---|---|
