@@ -1,3 +1,5 @@
+> ⚠️ **This repository has moved.** The actively maintained version is at https://github.com/hkafri/septfanet-gradcam — please use that one going forward. This copy is no longer updated.
+
 # Sep-TFAnet-VAD Grad-CAM
 
 Grad-CAM interpretability for [Sep-TFAnet-VAD](https://github.com/MordehayM/Sep-TFAnet-VAD), a PyTorch
